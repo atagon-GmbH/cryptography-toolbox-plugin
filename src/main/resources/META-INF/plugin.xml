@@ -1,0 +1,195 @@
+<idea-plugin>
+    <id>com.atagon.cryptography.toolbox</id>
+    <name>Cryptography Toolbox</name>
+    <vendor email="info@atagon.com" url="https://www.atagon.com">atagon GmbH</vendor>
+
+    <description><![CDATA[
+    <h3>Cryptography Toolbox by atagon GmbH</h3>
+    <p>A comprehensive cryptographic toolbox plugin for JetBrains IDEs (WebStorm, IntelliJ IDEA, PyCharm, PhpStorm, GoLand, CLion, Rider, etc.).</p>
+    <p>Allows developers to easily encrypt, decrypt, and hash selected text directly from the editor drop-down context menu, and replace the selection in-place.</p>
+    <h4>Supported Features:</h4>
+    <ul>
+        <li><b>Encryption Methods:</b> AES-256-GCM (Authenticated), AES (CBC), Blowfish, RSA-OAEP (SHA-256), RSA (PKCS#1 v1.5), Base64, Base32</li>
+        <li><b>Decryption Methods:</b> AES-256-GCM, AES (CBC), Blowfish, RSA-OAEP, RSA (PKCS#1 v1.5), Base64, Base32</li>
+        <li><b>Hashing Methods:</b> SHA-256, SHA-512, MD5</li>
+        <li><b>Key Management & Caching:</b> Save named RSA Public Keys to Settings directly from encryption prompts for reuse, or remember symmetric passphrases and private keys in memory with a 4-hour automatic expiration timer.</li>
+    </ul>
+    <p>Visit <a href="https://www.atagon.com">www.atagon.com</a> for more information.</p>
+    ]]></description>
+
+    <change-notes><![CDATA[
+    <h4>Version 1.1.0</h4>
+    <ul>
+        <li>Added AES-256-GCM authenticated encryption and decryption.</li>
+        <li>Added RSA-OAEP (SHA-256 with MGF1) encryption and decryption.</li>
+        <li>Added option to save public keys directly to Settings from editor prompts.</li>
+        <li>Added temporary 4-hour in-memory cache for symmetric passphrases and private keys.</li>
+        <li>Added official plugin icon assets.</li>
+    </ul>
+    <h4>Version 1.0.0</h4>
+    <ul>
+        <li>Initial release of Cryptography Toolbox by atagon GmbH.</li>
+        <li>Symmetric encryption (AES-CBC, Blowfish), Asymmetric encryption (RSA), Encodings (Base64, Base32), and Hashes (SHA-256, SHA-512, MD5).</li>
+    </ul>
+    ]]></change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService
+                serviceImplementation="com.atagon.cryptography.settings.CryptographySettingsState"/>
+
+        <applicationConfigurable
+                parentId="tools"
+                instance="com.atagon.cryptography.settings.CryptographyConfigurable"
+                id="com.atagon.cryptography.settings.CryptographyConfigurable"
+                displayName="Cryptography Toolbox"/>
+    </extensions>
+
+    <actions>
+        <!-- Encryption Actions -->
+        <action id="com.atagon.cryptography.actions.EncryptAesGcmAction"
+                class="com.atagon.cryptography.actions.EncryptAesGcmAction"
+                text="Encrypt with AES-256-GCM"
+                description="Encrypt selected text using AES-256-GCM authenticated encryption with passphrase"/>
+
+        <action id="com.atagon.cryptography.actions.EncryptAesAction"
+                class="com.atagon.cryptography.actions.EncryptAesAction"
+                text="Encrypt with AES (CBC)"
+                description="Encrypt selected text using AES-CBC with passphrase"/>
+
+        <action id="com.atagon.cryptography.actions.EncryptBlowfishAction"
+                class="com.atagon.cryptography.actions.EncryptBlowfishAction"
+                text="Encrypt with Blowfish"
+                description="Encrypt selected text using Blowfish with passphrase"/>
+
+        <action id="com.atagon.cryptography.actions.EncryptRsaOaepAction"
+                class="com.atagon.cryptography.actions.EncryptRsaOaepAction"
+                text="Encrypt with RSA-OAEP"
+                description="Encrypt selected text using RSA-OAEP (SHA-256) with a public key"/>
+
+        <action id="com.atagon.cryptography.actions.EncryptRsaAction"
+                class="com.atagon.cryptography.actions.EncryptRsaAction"
+                text="Encrypt with RSA (PKCS#1)"
+                description="Encrypt selected text using RSA (PKCS#1 v1.5) with a public key"/>
+
+        <action id="com.atagon.cryptography.actions.EncodeBase64Action"
+                class="com.atagon.cryptography.actions.EncodeBase64Action"
+                text="Encode with Base64"
+                description="Encode selected text into Base64"/>
+
+        <action id="com.atagon.cryptography.actions.EncodeBase32Action"
+                class="com.atagon.cryptography.actions.EncodeBase32Action"
+                text="Encode with Base32"
+                description="Encode selected text into Base32"/>
+
+        <!-- Decryption Actions -->
+        <action id="com.atagon.cryptography.actions.DecryptAesGcmAction"
+                class="com.atagon.cryptography.actions.DecryptAesGcmAction"
+                text="Decrypt with AES-256-GCM"
+                description="Decrypt selected AES-256-GCM cipher text with passphrase"/>
+
+        <action id="com.atagon.cryptography.actions.DecryptAesAction"
+                class="com.atagon.cryptography.actions.DecryptAesAction"
+                text="Decrypt with AES (CBC)"
+                description="Decrypt selected AES cipher text with passphrase"/>
+
+        <action id="com.atagon.cryptography.actions.DecryptBlowfishAction"
+                class="com.atagon.cryptography.actions.DecryptBlowfishAction"
+                text="Decrypt with Blowfish"
+                description="Decrypt selected Blowfish cipher text with passphrase"/>
+
+        <action id="com.atagon.cryptography.actions.DecryptRsaOaepAction"
+                class="com.atagon.cryptography.actions.DecryptRsaOaepAction"
+                text="Decrypt with RSA-OAEP"
+                description="Decrypt selected RSA-OAEP cipher text with private key"/>
+
+        <action id="com.atagon.cryptography.actions.DecryptRsaAction"
+                class="com.atagon.cryptography.actions.DecryptRsaAction"
+                text="Decrypt with RSA (PKCS#1)"
+                description="Decrypt selected RSA cipher text with private key"/>
+
+        <action id="com.atagon.cryptography.actions.DecodeBase64Action"
+                class="com.atagon.cryptography.actions.DecodeBase64Action"
+                text="Decode with Base64"
+                description="Decode selected Base64 text"/>
+
+        <action id="com.atagon.cryptography.actions.DecodeBase32Action"
+                class="com.atagon.cryptography.actions.DecodeBase32Action"
+                text="Decode with Base32"
+                description="Decode selected Base32 text"/>
+
+        <!-- Hashing Actions -->
+        <action id="com.atagon.cryptography.actions.HashSha256Action"
+                class="com.atagon.cryptography.actions.HashSha256Action"
+                text="Hash with SHA-256"
+                description="Replace selected text with SHA-256 hash"/>
+
+        <action id="com.atagon.cryptography.actions.HashSha512Action"
+                class="com.atagon.cryptography.actions.HashSha512Action"
+                text="Hash with SHA-512"
+                description="Replace selected text with SHA-512 hash"/>
+
+        <action id="com.atagon.cryptography.actions.HashMd5Action"
+                class="com.atagon.cryptography.actions.HashMd5Action"
+                text="Hash with MD5"
+                description="Replace selected text with MD5 hash"/>
+
+        <!-- Submenu Groups -->
+        <group id="com.atagon.cryptography.actions.EncryptActionGroup"
+               class="com.atagon.cryptography.actions.EncryptActionGroup"
+               text="Encrypt Selected Text"
+               description="Cryptographic encryption options for selected text"
+               popup="true">
+            <reference id="com.atagon.cryptography.actions.EncryptAesGcmAction"/>
+            <reference id="com.atagon.cryptography.actions.EncryptAesAction"/>
+            <reference id="com.atagon.cryptography.actions.EncryptBlowfishAction"/>
+            <reference id="com.atagon.cryptography.actions.EncryptRsaOaepAction"/>
+            <reference id="com.atagon.cryptography.actions.EncryptRsaAction"/>
+            <separator/>
+            <reference id="com.atagon.cryptography.actions.EncodeBase64Action"/>
+            <reference id="com.atagon.cryptography.actions.EncodeBase32Action"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
+        </group>
+
+        <group id="com.atagon.cryptography.actions.DecryptActionGroup"
+               class="com.atagon.cryptography.actions.DecryptActionGroup"
+               text="Decrypt Selected Text"
+               description="Cryptographic decryption options for selected text"
+               popup="true">
+            <reference id="com.atagon.cryptography.actions.DecryptAesGcmAction"/>
+            <reference id="com.atagon.cryptography.actions.DecryptAesAction"/>
+            <reference id="com.atagon.cryptography.actions.DecryptBlowfishAction"/>
+            <reference id="com.atagon.cryptography.actions.DecryptRsaOaepAction"/>
+            <reference id="com.atagon.cryptography.actions.DecryptRsaAction"/>
+            <separator/>
+            <reference id="com.atagon.cryptography.actions.DecodeBase64Action"/>
+            <reference id="com.atagon.cryptography.actions.DecodeBase32Action"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="com.atagon.cryptography.actions.EncryptActionGroup"/>
+        </group>
+
+        <group id="com.atagon.cryptography.actions.HashActionGroup"
+               class="com.atagon.cryptography.actions.HashActionGroup"
+               text="Hash Selected Text"
+               description="Hashing options for selected text"
+               popup="true">
+            <reference id="com.atagon.cryptography.actions.HashSha256Action"/>
+            <reference id="com.atagon.cryptography.actions.HashSha512Action"/>
+            <reference id="com.atagon.cryptography.actions.HashMd5Action"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="com.atagon.cryptography.actions.DecryptActionGroup"/>
+        </group>
+
+        <!-- Master Cryptography Toolbox Action Group -->
+        <group id="com.atagon.cryptography.actions.CryptographyToolboxGroup"
+               class="com.atagon.cryptography.actions.CryptographyToolboxGroup"
+               text="Cryptography Toolbox"
+               description="atagon Cryptography Toolbox"
+               popup="true">
+            <reference id="com.atagon.cryptography.actions.EncryptActionGroup"/>
+            <reference id="com.atagon.cryptography.actions.DecryptActionGroup"/>
+            <reference id="com.atagon.cryptography.actions.HashActionGroup"/>
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditMenu" anchor="last"/>
+        </group>
+    </actions>
+</idea-plugin>

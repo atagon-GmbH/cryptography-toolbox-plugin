@@ -1,0 +1,23 @@
+package com.atagon.cryptography.actions;
+
+import com.atagon.cryptography.crypto.Base32;
+import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * Action to encode selected text with Base32.
+ * Project by atagon GmbH (www.atagon.com).
+ */
+public class EncodeBase32Action extends AbstractCryptoAction {
+
+    @Override
+    protected @NotNull String getActionTitle() {
+        return "Encode with Base32";
+    }
+
+    @Override
+    protected @Nullable String executeCryptoOperation(@Nullable Project project, @NotNull String input) {
+        return Base32.encode(input);
+    }
+}
